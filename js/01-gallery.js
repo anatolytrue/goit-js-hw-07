@@ -22,22 +22,24 @@ containerGallery.insertAdjacentHTML("beforeend", result);
 
 function openImage(e) {
     e.preventDefault();
-
-    const modal = basicLightbox.create(
-        `<img src="${e.target.dataset.source}" width='800' height='600'/>`,
-        {
-            onShow: () => window.addEventListener('keydown', onPressKeyESC),
-            onClose: () => window.addEventListener('keydown', onPressKeyESC),
-        }
-    );
-    modal.show();
+    if (e.target.classList.contains('gallery__image')) {
+        const modal = basicLightbox.create(
+            `<img src="${e.target.dataset.source}" width='800' height='600'/>`,
+            {
+                onShow: () => window.addEventListener('keydown', onPressKeyESC),
+                onClose: () => window.removeEventListener('keydown', onPressKeyESC),
+            }
+        );
+        modal.show();
     
-    function onPressKeyESC(e) {
-        if (e.code === 'Escape') {
-            modal.close();
+        function onPressKeyESC(e) {
+            if (e.code === 'Escape') {
+                modal.close();
+                // window.removeEventListener('keydown', onPressKeyESC)
+            }
         }
     }
 }
 
 containerGallery.addEventListener('click', openImage);
-console.log(galleryItems);
+// console.log(galleryItems);
